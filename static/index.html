@@ -235,10 +235,8 @@
     </style>
     <script src="js/jquery-3.3.1.js"></script>
     <script src="js/unslider.min.js"></script>
-    <!--<script src="js/base_url.js"></script>-->
+    <script src="js/base_url.js"></script>
     <script>
-        // var base_url = 'http://127.0.0.1:8877/';
-        var base_url = '';
         $(function () {
             $.get(base_url + 'movie/', function (result) {
                 if (result != null && result.msg === 'success' && result.status === 200) {
