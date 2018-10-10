@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>这什么鬼电影资源欢迎你</title>
+    <link rel="stylesheet" href="css/unslider_style.css">
+    <style>
+        body {
+            font-family: "Microsoft YaHei UI";
+            font-size: 12px;
+            background-color: #f2f2f2;
+        }
+
+        /*头部*/
+        #page_top {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            width: 100%;
+            background-color: black;
+        }
+
+        #page_top > div {
+            width: 650px;
+            height: 42px;
+            margin: 0 auto;
+        }
+
+        #page_top > div > a {
+            position: relative;
+            float: left;
+            margin: 5px;
+            color: gray;
+            line-height: 42px;
+        }
+
+        #page_top > div > a:first-child {
+            font-size: 15px;
+            color: white;
+        }
+
+        /*影视总框*/
+        #page_body {
+            margin: 0 auto;
+            width: 770px;
+            position: relative;
+            float: left;
+        }
+
+        #page_body_div {
+            margin: 0 auto;
+            width: 1160px;
+        }
+
+        #page_body_ranking {
+            position: relative;
+            float: left;
+            width: 380px;
+        }
+
+        /*推荐部分*/
+        .recommend {
+            margin: 0 auto;
+            width: 770px;
+            position: relative;
+            float: left;
+            height: 26px;
+            margin-top: 10px;
+            background-color: black;
+            font-size: 15px;
+        }
+
+        .recommend > a {
+            color: white;
+            position: absolute;
+            top: 4px;
+        }
+
+        .recommend > a:first-child {
+            left: 5px;
+        }
+
+        .recommend > a:last-child {
+            right: 5px;
+        }
+
+        /*排行榜部分*/
+        .recommend_ranking {
+            width: 380px;
+        }
+
+        /*影视部分*/
+        .film {
+            padding-top: 10px;
+            margin: 2px auto;
+            width: 770px;
+            height: 430px;
+            position: relative;
+            float: left;
+        }
+
+        .film > a {
+            position: relative;
+            float: left;
+            height: 210px;
+            width: 122px;
+            text-align: center;
+            margin: 3px;
+            color: #47c5ec;
+        }
+
+        .film > a:visited { /*不改变a标签访问过后的颜色*/
+            color: #47c5ec;
+        }
+
+        .film > a > img {
+            height: 175px;
+            width: 122px;
+        }
+
+        .film > a > p {
+            margin: 2px auto;
+            overflow: hidden;
+            width: 120px; /*设置需要固定的宽度*/
+            white-space: nowrap; /* 不换行 */
+            text-overflow: ellipsis; /* 超出部分用 . . . . 代替 */
+        }
+
+        .film > a > p:last-child {
+            color: black;
+        }
+
+        /*排行榜部分*/
+        .film_ranking {
+            height: 430px;
+            width: 380px;
+            position: relative;
+            float: left;
+            padding-top: 10px;
+            margin: 2px auto;
+        }
+
+        .film_ranking > div {
+            position: relative;
+            float: left;
+            width: 380px;
+            height: 10%;
+        }
+
+        .film_ranking > div > span {
+            position: relative;
+            float: left;
+            margin-left: 15px;
+            margin-right: 5px;
+            width: 17px;
+            height: 17px;
+            color: white;
+            line-height: 17px;
+            text-align: center;
+        }
+
+        .span_blue {
+            background: #00afe4;
+        }
+
+        .span_yellow {
+            background: #f1c420;
+        }
+
+        .film_name_a {
+            position: relative;
+            float: left;
+            overflow: hidden; /*超出部分隐藏*/
+            width: 280px; /*设置需要固定的宽度*/
+            white-space: nowrap; /* 不换行 */
+            text-overflow: ellipsis; /* 超出部分用 . . . . 代替 */
+        }
+
+        .update_time_a {
+            position: absolute;
+            width: auto;
+            right: 2px;
+            top: 0;
+        }
+
+        .ranking_img {
+            position: absolute;
+            height: 288px;
+            width: 200px;
+            left: -200px;
+            top: -122px;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .ranking_img_hover {
+            left: -200px;
+            top: -144px;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /*脚部*/
+        #page_footer {
+            text-align: center;
+        }
+
+        #page_footer > div {
+            margin: 20px;
+            font-size: 12px;
+        }
+
+        /*清除浮动*/
+        .clear {
+            zoom: 1;
+        }
+
+        .clear:after {
+            clear: both;
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            visibility: hidden;
+        }
+
+        /* 去掉默认的下划线 */
+        a {
+            text-decoration: none; /*去掉下划线*/
+            cursor: pointer; /*小手指*/
+            display: block; /*设置成block可以清除a标签之间的间距 */
+            color: black;
+        }
+    </style>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="js/unslider.min.js"></script>
+    <!--<script src="js/base_url.js"></script>-->
+    <script>
+        // var base_url = 'http://127.0.0.1:8877/';
+        var base_url = '';
+        $(function () {
+            $.get(base_url + 'movie/', function (result) {
+                if (result != null && result.msg === 'success' && result.status === 200) {
+
+                    // 头部
+                    for (let catalog of result.data.catalogs) {
+                        $('#page_top>div')
+                            .append($('<a>').html(catalog.name).attr('href', 'film_type.html?name=' + catalog.name))
+                    }
+
+
+                    // 轮播图
+                    for (let banner of result.data.banners) {
+                        ($('<li>')
+                            .append($('<img>').attr('src', 'img/' + banner.img_url + '.jpg')))
+                            .appendTo($('#banner>ul'))
+                    }
+
+
+                    // 轮播图jq代码
+                    var unslider = $('#banner').unslider({
+                            dots: true
+                        }),
+                        data = unslider.data('unslider');
+                    $('.unslider-arrow').click(function () {
+                        var fn = this.className.split(' ')[1];
+                        data[fn]();
+                    });
+                }
+            });
+
+
+            // 电影
+            films($('#film >div:first'), '电影', $('#film_div'), 0);
+            films($('#teleplay >div:first'), '电视剧', $('#teleplay_div'), 0);
+            films($('#anime >div:first'), '动漫', $('#anime_div'), 0);
+
+
+            // 排行榜
+            films($('#film_ranking >div:first'), '电影', $('#film_div_ranking'), 1);
+            films($('#teleplay_ranking >div:first'), '电视剧', $('#teleplay_div_ranking'), 1);
+            films($('#anime_ranking >div:first'), '动漫', $('#anime_div_ranking'), 1);
+
+
+            // 排行榜图片移入移出效果  // 代码有问题
+            // $('.film_div_a').hover(function () {
+            //     $(this).find($('img')).addClass('ranking_img_hover');
+            // }, function () {
+            //     $(this).find($('img')).removeClass('ranking_img_hover');
+            // });
+            $('.film_div_a').hover(function () {
+                $(this).find($('img')).toggle();
+            })
+        });
+        // 将主要功能打包成一个函数
+
+        // 界面部分
+        function films(div_film, film_type, result_div_film, order_num) {
+            $.get(base_url + 'movie/?name=' + film_type + '&order=' + order_num, function (result) {
+                div_film
+                    .append($('<a>').html('最新' + film_type + '推荐'));
+                if (order_num == 0) {
+                    div_film.append($('<a>').html('更多').attr('href', '#'));
+                }
+
+                for (let i = 0; i < result.data.films.length; i++) {
+                    var film = result.data.films[i];
+                    if (film.cata_log_name == film_type) {
+                        if (order_num == 0) {
+                            result_div_film
+                                .append($('<a>').attr('href', 'film.html?id=' + film.id)
+                                    .append($('<img>').attr('src', film.image).attr('title', film.name))
+                                    .append($('<p>').html(film.name).attr('title', film.name))
+                                    .append($('<p>').html(film.type_name + '-' + film.on_decade)))
+                        }
+                        if (order_num == 1) {
+                            result_div_film
+                                .append($('<div>').addClass('film_div_a')
+                                    .append($('<span>').html(i + 1).addClass(i < 3 ? 'span_yellow' : 'span_blue'))
+                                    .append($('<a>').html(film.name).attr('title', film.name).attr('href', 'film.html?id=' + film.id).addClass('film_name_a'))
+                                    .append($('<a>').html(film.update_time.slice(5, 10)).attr('title', film.name).addClass('update_time_a'))
+                                    .append($("<img>").attr('src', film.image).addClass('ranking_img')))
+                        }
+                    }
+                }
+            })
+        }
+
+    </script>
+</head>
+<body>
+<!--头部-->
+<div id="page_top" class="clear">
+    <div>
+        <a href="">欢迎来到这什么鬼最新影片资源</a>
+        <a href="" onclick="alert('请点击Ctrl+D收藏')">收藏网站</a>
+        <a href="login.html">登陆</a>
+        <a href="register.html">注册</a>
+        <a href="">|</a>
+        <a href="index.html">首页</a>
+    </div>
+</div>
+
+<!--轮播图-->
+<div id="banner">
+    <ul></ul>
+    <a href="javascript:void(0);" class="unslider-arrow prev"><img class="arrow" id="al" src="img/arrowl.png"
+                                                                   alt="prev"></a>
+    <a href="javascript:void(0);" class="unslider-arrow next"><img class="arrow" id="ar" src="img/arrowr.png"
+                                                                   alt="next"></a>
+</div>
+
+<div id="page_body_div" class="clear">
+    <!--影视资源-->
+    <div id="page_body" class="clear">
+        <div id="film" class="clear">
+            <div class="recommend"></div>
+            <div id="film_div" class="film clear"></div>
+        </div>
+
+        <div id="teleplay" class="clear">
+            <div class="recommend"></div>
+            <div id="teleplay_div" class="film clear"></div>
+        </div>
+
+        <div id=anime class="clear">
+            <div class="recommend"></div>
+            <div id="anime_div" class="film clear"></div>
+        </div>
+    </div>
+
+    <!--排行榜-->
+    <div id="page_body_ranking" class="clear">
+        <div id="film_ranking" class="clear ">
+            <div class="recommend_ranking recommend"></div>
+            <div id="film_div_ranking" class="film_ranking clear"></div>
+        </div>
+
+        <div id="teleplay_ranking" class="clear">
+            <div class="recommend_ranking recommend"></div>
+            <div id="teleplay_div_ranking" class="film_ranking clear"></div>
+        </div>
+
+        <div id=anime_ranking class="clear">
+            <div class="recommend_ranking recommend"></div>
+            <div id="anime_div_ranking" class="film_ranking clear"></div>
+        </div>
+    </div>
+</div>
+
+<!--脚部-->
+<div id="page_footer">
+    <div>免责声明:如果侵犯了你的权益，请发邮件至：chl14@163.com，我们会及时删除侵权内容，谢谢合作！</div>
+    <div>Copyright © 2018 蜀ICP备16028726号 2018 All Rights Reserved.<img src="http://icon.cnzz.com/img/pic.gif" alt="">
+    </div>
+</div>
+</body>
+</html>

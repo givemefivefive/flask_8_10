@@ -1,0 +1,13 @@
+$('#page_top')
+    .append($('<div>')
+        .append($('<a>').html('欢迎来到这什么鬼最新影片资源').attr('href', '#'))
+        .append($('<a>').html('收藏网站').attr('onclick', "alert('请点击Ctrl+D收藏')"))
+        .append($('<a>').html('登陆').attr('href', 'login.html'))
+        .append($('<a>').html('注册').attr('href', 'register.html'))
+        .append($('<a>').html('|'))
+        .append($('<a>').html('首页').attr('href', 'index.html'))
+        .append($('<a>').html('短视频').attr('href', '#'))
+        .append($('<a>').html('最代码').attr('href', '#'))
+        .append($('<a>').html('电影').attr('href', '#'))
+        .append($('<a>').html('电视剧').attr('href', '#'))
+        .append($('<a>').html('动漫').attr('href', '#')));

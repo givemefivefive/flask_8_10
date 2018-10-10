@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>最新电影下载</title>
+    <style>
+        /*清除浮动*/
+        .clear {
+            zoom: 1;
+        }
+
+        .clear:after {
+            clear: both;
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            visibility: hidden;
+        }
+
+        /* 去掉默认的下划线 */
+        a {
+            text-decoration: none; /*去掉下划线*/
+            cursor: pointer; /*小手指*/
+            /*display: block; !*设置成block可以清除a标签之间的间距 *!*/
+            color: black;
+        }
+
+        body {
+            font-family: "Microsoft YaHei UI";
+            font-size: 12px;
+            background-color: #f2f2f2;
+        }
+
+        .position_left {
+            position: relative;
+            float: left;
+        }
+
+        .position_right {
+            position: relative;
+            float: right;
+        }
+
+        .border_top {
+            border-top: 15px solid #dcdfe2;
+        }
+
+        /*被选中框背景色*/
+        .active {
+            background-color: slategray;
+            color: yellow;
+        }
+
+        /*头部*/
+        #page_top {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            width: 100%;
+            background-color: black;
+        }
+
+        #page_top > div {
+            width: 650px;
+            height: 42px;
+            margin: 0 auto;
+        }
+
+        #page_top > div > a {
+            position: relative;
+            float: left;
+            margin: 5px;
+            color: gray;
+            line-height: 42px;
+        }
+
+        #page_top > div > a:first-child {
+            font-size: 15px;
+            color: white;
+        }
+
+        /*分类页面*/
+        #film {
+            width: 1160px;
+            margin: 0 auto;
+        }
+
+        #all_paginate {
+            border: 1px solid gray;
+            margin-top: 50px;
+            width: 100%;
+        }
+
+        #all_paginate > div {
+            padding: 5px;
+        }
+
+        #all_paginate > div > div {
+            padding: 5px;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        #all_paginate > div > span {
+            padding: 5px;
+        }
+
+        #film_paginate {
+            margin-top: 20px;
+            border: 1px solid gray;
+            width: 100%;
+            padding-bottom: 20px;
+        }
+
+        #film_paginate > p {
+            text-align: center;
+        }
+
+        #film_paginate > a {
+            height: 210px;
+            width: 122px;
+            text-align: center;
+            margin: 20px 0 0 61px;
+            color: #47c5ec;
+        }
+
+        #film_paginate > a:visited { /*不改变a标签访问过后的颜色*/
+            color: #47c5ec;
+        }
+
+        #film_paginate > a > img {
+            height: 175px;
+            width: 122px;
+        }
+
+        #film_paginate > a > p {
+            margin: 2px auto;
+            overflow: hidden;
+            width: 120px; /*设置需要固定的宽度*/
+            white-space: nowrap; /* 不换行 */
+            text-overflow: ellipsis; /* 超出部分用 . . . . 代替 */
+        }
+
+        /*脚部*/
+        #page_footer {
+            text-align: center;
+            width: 100%;
+        }
+
+        #page_footer > div {
+            margin: 20px;
+        }
+    </style>
+    <script src="js/jquery-3.3.1.js"></script>
+    <!--<script src="js/base_url.js"></script>-->
+
+    <script>
+        var base_url = '';
+        var name = location.search;
+        var tagger = decodeURI(name.split('=')[1]);
+        $(function () {
+            $.get(base_url + 'movie/' + name, function (result) {
+                // 头部
+                for (let catalog of result.data.catalogs) {
+                    $('#page_top>div')
+                        .append($('<a>').html(catalog.name).attr('href', 'film_type.html?name=' + catalog.name));
+
+                    // 分类
+                    $('#classify')
+                        .append($('<span>').html(catalog.name).addClass('position_left'));
+                    if (catalog.name == tagger) {
+                        $('#classify > span:last').addClass('active')
+                    }
+                }
+
+                // 子类
+                for (let subclass of result.data.subclasses) {
+                    $('#subclass')
+                        .append($('<span>').html(subclass.name).addClass('position_left'))
+                }
+
+                // 地区
+                for (let loc of result.data.loces) {
+                    $('#area')
+                        .append($('<span>').html(loc.name).addClass('position_left'))
+                }
+
+                // 年代
+                for (let decade of result.data.decades) {
+                    $('#decade')
+                        .append($('<span>').html(decade.name).addClass('position_left'))
+                }
+
+                // 电影页面
+                if (result.data.films.length == 0) {
+                    $('#film_paginate')
+                        .append($('<p>').html('暂无相关数据'))
+                }
+                else {
+                    for (let film of result.data.films) {
+                        $('#film_paginate')
+                            .append($('<a>').attr('href', 'film.html?id=' + film.id).addClass('position_left')
+                                .append($('<img>').attr('src', film.image).attr('title', film.name))
+                                .append($('<p>').html(film.name).attr('title', film.name))
+                                .append($('<p>').html(film.type_name + '-' + film.on_decade)))
+                    }
+                }
+            });
+            film_click($('#classify > span'));
+            film_click($('#subclass > span'));
+            film_click($('#area > span'));
+            film_click($('#decade > span'));
+
+        });
+
+        // 点击事件封装成一个函数
+        function film_click(selector) {
+            selector.click(function () {
+                $(this).addClass('active').siblings().removeClass('active');
+            });
+        }
+
+    </script>
+</head>
+<body>
+<!--头部-->
+<div id="page_top" class="clear">
+    <div>
+        <a href="">欢迎来到这什么鬼最新影片资源</a>
+        <a href="" onclick="alert('请点击Ctrl+D收藏')">收藏网站</a>
+        <a href="login.html">登陆</a>
+        <a href="register.html">注册</a>
+        <a href="">|</a>
+        <a href="index.html">首页</a>
+    </div>
+</div>
+
+<!--分类与详情页面-->
+<div id="film">
+    <!--分类菜单-->
+    <div id="all_paginate" class="position_left clear">
+        <div id="classify" class="clear">
+            <div class="position_left">分类</div>
+        </div>
+        <div id="subclass" class="clear">
+            <div class="position_left">子类</div>
+        </div>
+        <div id="area" class="clear">
+            <div class="position_left">地区</div>
+        </div>
+        <div id="decade" class="clear">
+            <div class="position_left">年代</div>
+        </div>
+    </div>
+
+    <!--分类电影详情-->
+    <div id="film_paginate" class="position_left clear"></div>
+
+    <!--脚部-->
+    <div id="page_footer" class="position_left">
+        <div>免责声明:如果侵犯了你的权益，请发邮件至：chl14@163.com，我们会及时删除侵权内容，谢谢合作！</div>
+        <div>Copyright © 2018 蜀ICP备16028726号 2018 All Rights Reserved.<img src="http://icon.cnzz.com/img/pic.gif"
+                                                                           alt="">
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

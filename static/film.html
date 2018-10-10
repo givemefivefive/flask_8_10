@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>你的最爱_嘀嘀嘀!</title>
+    <style>
+        /*清除浮动*/
+        .clear {
+            zoom: 1;
+        }
+
+        .clear:after {
+            clear: both;
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            visibility: hidden;
+        }
+
+        /* 去掉默认的下划线 */
+        a {
+            text-decoration: none; /*去掉下划线*/
+            cursor: pointer; /*小手指*/
+            /*display: block; !*设置成block可以清除a标签之间的间距 *!*/
+            color: black;
+        }
+
+        body {
+            font-family: "Microsoft YaHei UI";
+            font-size: 12px;
+            background-color: #f2f2f2;
+        }
+
+        .position_left {
+            position: relative;
+            float: left;
+        }
+
+        .position_right {
+            position: relative;
+            float: right;
+        }
+
+        .border_top {
+            border-top: 15px solid #dcdfe2;
+        }
+
+        /*头部*/
+        #page_top {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            width: 100%;
+            background-color: black;
+        }
+
+        #page_top > div {
+            width: 650px;
+            height: 42px;
+            margin: 0 auto;
+        }
+
+        #page_top > div > a {
+            position: relative;
+            float: left;
+            margin: 5px;
+            color: gray;
+            line-height: 42px;
+        }
+
+        #page_top > div > a:first-child {
+            font-size: 15px;
+            color: white;
+        }
+
+        /*详情界面*/
+        #film {
+            width: 1160px;
+            margin: 0 auto;
+        }
+
+        .film {
+            margin: 0 auto;
+            width: 1160px;
+            background-color: white;
+        }
+
+        #film_detail {
+            height: 460px;
+            padding-top: 40px;
+        }
+
+        #film_detail > div:first-child {
+            height: 30px;
+            margin-bottom: 15px;
+            background-color: #dcdfe2;
+            line-height: 30px;
+        }
+
+        #film_detail > div:first-child > span {
+            padding: 20px 10px;
+        }
+
+        /*具体详情界面*/
+        .img_div {
+            width: 224px;
+            padding: 0 15px;
+        }
+
+        .img_div > img {
+            width: 224px;
+            height: 350px;
+            padding-bottom: 10px;
+        }
+
+        .img_div > div {
+            height: 44px;
+            background-color: #444444;
+            text-align: center;
+            line-height: 44px;
+            font-size: 24px;
+        }
+
+        .img_div > div > a {
+            color: #f5f5f5;
+
+        }
+
+        .detail_div {
+            width: 500px;
+            padding: 0 20px;
+        }
+
+        .detail_div > li:first-child {
+            height: 36px;
+            font-size: 22px;
+            overflow: hidden; /*超出部分隐藏*/
+            width: 480px; /*设置需要固定的宽度*/
+            white-space: nowrap; /* 不换行 */
+            text-overflow: ellipsis; /* 超出部分用 . . . . 代替 */
+        }
+
+        .detail_div > li {
+            line-height: 26px;
+            color: black;
+            list-style: none;
+            width: 500px;
+        }
+
+        .detail_div > li > span {
+            color: #49c1e6;
+        }
+
+        .detail_div > li > a {
+            color: #49c1e6;
+        }
+
+        .tips_div {
+            width: 250px;
+        }
+
+        /*可能你喜欢*/
+        .maybe_you_like {
+            text-align: center;
+            margin: 5px;
+        }
+
+        .maybe_you_like > img {
+            height: 175px;
+            width: 122px;
+        }
+
+        .maybe_you_like > div {
+            white-space: nowrap; /* 不换行 */
+            width: 122px; /*设置需要固定的宽度*/
+            overflow: hidden; /*超出部分隐藏*/
+        }
+
+        #film_type_sub {
+            padding-bottom: 10px;
+        }
+
+        #film_type_sub > div:first-child {
+            padding-left: 15px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        #film_type_sub > div:last-child {
+            padding-left: 10px;
+        }
+
+        /*下载地址*/
+        #film_download {
+            padding-top: 10px;
+        }
+
+        #film_download > div:first-child > img {
+            width: 17px;
+            height: 17px;
+            padding-left: 15px;
+        }
+
+        #film_download > div:first-child > div {
+            padding-right: 20px;
+            color: #40c6a3;
+        }
+
+        #film_download > div:first-child > div > a {
+            color: red;
+        }
+
+        .flim_download {
+            margin: 10px;
+        }
+
+        .flim_download > div > a {
+            margin-right: 5px;
+            color: white;
+        }
+
+        .flim_download > div > a:last-child {
+            background-color: #00b384;
+        }
+
+        .kankan {
+            background-color: #ffb47e;
+        }
+
+        .lixian {
+            background-color: #00b0f0;
+        }
+
+        /*电影详细介绍*/
+
+        #film_detail_introduce > div {
+            margin: 5px 10px;
+            line-height: 20px;
+        }
+
+        /*脚部*/
+        #page_footer {
+            text-align: center;
+        }
+
+        #page_footer > div {
+            margin: 20px;
+        }
+    </style>
+    <script src="js/jquery-3.3.1.js"></script>
+    <!--<script src="js/base_url.js"></script>-->
+    <script>
+        // var loacl_url = location.hostname+':8877/';
+        // console.log(loacl_url)
+        // var base_url = 'http://127.0.0.1:8877/';
+        var base_url = '';
+
+        var name = location.search;
+        $(function () {
+            // 头部
+            $.get(base_url + 'movie/', function (result) {
+                    for (let catalog of result.data.catalogs) {
+                        $('#page_top>div')
+                            .append($('<a>').html(catalog.name).attr('href', 'film_type.html?name=' + catalog.name))
+                    }
+                }
+            );
+
+
+            // 详情界面
+            $.get(base_url + 'movie/' + name, function (result) {
+                if (result != null && result.msg === 'success' && result.status === 200) {
+                    for (let film of result.data.films) {
+                        $('#film_detail')
+                        // 首页条
+                            .append($('<div>')
+                                .append($('<span>').html('当前位置:'))
+                                .append($('<a>').html('首页').attr('href', 'index.html'))
+                                .append($('<span>').html('»'))
+                                .append($('<a>').html(film.cata_log_name).attr('href', ''))
+                                .append($('<span>').html('»'))
+                                .append($('<a>').html(film.sub_class_name).attr('href', ''))
+                                .append($('<span>').html('»'))
+                                .append($('<a>').html(film.type_name).attr('href', ''))
+                                .append($('<span>').html('»'))
+                                .append($('<span>').html(film.name))
+                            )
+
+                            // 电影详情界面
+                            .append($('<div>').addClass('clear')
+                                .append($('<div>').addClass('img_div position_left')
+                                    .append($('<img>').attr('src', film.image))
+                                    .append($('<div>')
+                                        .append($('<a>').html('立即播放').attr('href', '#film_download'))))
+                                .append($('<ul>').addClass('detail_div position_left')
+                                    .append($('<li>').html(film.name))
+                                    .append($('<li>')
+                                        .append('<span>上映年代:  </span>' + film.on_decade)
+                                        .append('<span>           状态:  </span>' + film.status))
+                                    .append($('<li>')
+                                        .append('<span>类型:  </span>' + film.sub_class_name))
+                                    .append($('<li>')
+                                        .append('<span>主演:  </span>' + film.actor))
+                                    .append($('<li>')
+                                        .append('<span>地区:  </span>' + film.loc_name))
+                                    .append($('<li>')
+                                        .append('<span>更新日期:  </span>' + film.update_time))
+                                    .append($('<li>')
+                                        .append('<span>剧情:  </span>' + (film.plot.length < 120 ? film.plot : film.plot.slice(0, 110) + '...'))
+                                        .append($('<a>').html('[详细]').attr('href', '#film_detail_introduce')))
+                                    .append($('<li>')
+                                        .append('<span>影片评价:</span>')))
+                                .append($('<div>').html('友情提示：欢迎大家使用网盘连接下载！').addClass('tips_div position_left')));
+
+
+                        // 猜你喜欢
+                        $.get(base_url + 'movie/?film_type_sub=' + film.sub_class_name + '&type_name=' + film.type_name, function (result) {
+                            for (let film of result.data.films) {
+                                $('#film_type_sub>div:last')
+                                    .append($('<a>').addClass('clear maybe_you_like position_left').attr('href', 'film.html?id=' + film.id)
+                                        .append($('<img>').attr('src', film.image))
+                                        .append($('<div>').append(film.name)))
+                            }
+                        });
+
+                        // 电影详细介绍
+                        $('#film_detail_introduce')
+                            .append($('<div>').html('剧情介绍'))
+                            .append($('<div>').html(film.plot))
+                    }
+
+                    // 下载地址
+                    for (let res of result.data.reses) {
+                        $('#film_download')
+                            .append($('<div>').addClass('clear flim_download')
+                                .append($('<div>').html(res.name)
+                                    .append($('<a>').html('小米').addClass('position_right lixian').attr('href', res.link))
+                                    .append($('<a>').html('旋风').addClass('position_right kankan').attr('href', res.link))
+                                    .append($('<a>').html('离线').addClass('position_right lixian').attr('href', res.link))
+                                    .append($('<a>').html('看看').addClass('position_right kankan').attr('href', res.link))
+                                    .append($('<a>').html('迅雷').addClass('position_right').attr('href', res.link))))
+                    }
+                }
+            });
+        })
+
+    </script>
+</head>
+<body>
+<!--头部-->
+<div id="page_top" class="clear">
+    <div>
+        <a href="">欢迎来到这什么鬼最新影片资源</a>
+        <a href="" onclick="alert('请点击Ctrl+D收藏')">收藏网站</a>
+        <a href="login.html">登陆</a>
+        <a href="register.html">注册</a>
+        <a href="">|</a>
+        <a href="index.html">首页</a>
+    </div>
+</div>
+
+<div id="film" class="clear">
+    <div id="film_detail" class="clear film "></div>
+
+    <div id="film_type_sub" class="border_top clear film position_left">
+        <div>猜你喜欢</div>
+        <div></div>
+    </div>
+
+    <div id="film_download" class="border_top clear film position_left">
+        <div class="clear">
+            <img src="img/download_img.jpg">下载地址
+            <div class="position_right">此处支持迅雷,qq旋风,小米路由下载,同事支持迅雷影音播放,若不能下载请点击<a href="" onclick="alert('感谢您的反馈!')">失效一键反馈</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="film_detail_introduce" class="border_top clear film position_left"></div>
+
+    <!--脚部-->
+    <div id="page_footer" class="border_top film position_left clear">
+        <div>免责声明:如果侵犯了你的权益，请发邮件至：chl14@163.com，我们会及时删除侵权内容，谢谢合作！</div>
+        <div>Copyright © 2018 蜀ICP备16028726号 2018 All Rights Reserved.<img src="http://icon.cnzz.com/img/pic.gif"
+                                                                           alt="">
+        </div>
+    </div>
+</div>
+</body>
+</html>
